@@ -2,6 +2,8 @@
 
 An intelligent Hinglish-speaking voice assistant that makes telecom services simple, accessible, and human-like — no more confusing IVRs or endless menus.
 
+🌐 **Now available with Web Interface!** Choose between CLI or beautiful Streamlit web UI.
+
 
 
 
@@ -70,7 +72,65 @@ Stronger Customer Loyalty → Conversational Hinglish feels familiar and trustwo
 
 24/7 Service → Always available, unlike human agents.
 
-🚀 Future Extensions
+## 🚀 Quick Start
+
+### Option 1: Web Interface (Recommended)
+```bash
+pip install -r requirements.txt
+streamlit run app.py
+```
+Open browser at `http://localhost:8501` → Enter phone number → Use voice or text queries!
+
+### Option 2: CLI Version
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+📖 **Full Setup Guide**: See [RUN_GUIDE.md](RUN_GUIDE.md)
+☁️ **Cloud Deployment**: See [DEPLOYMENT.md](DEPLOYMENT.md)
+
+## 🎨 Features
+
+### Web Interface (`app.py`)
+- ✅ Beautiful Streamlit UI with voice recording
+- ✅ Browser-based audio input/output
+- ✅ Text input alternative
+- ✅ Conversation history
+- ✅ User dashboard with balance/plan info
+- ✅ Cloud deployment ready (Streamlit Cloud, Hugging Face)
+
+### CLI Version (`main.py`)
+- ✅ System microphone voice input
+- ✅ Speaker audio output
+- ✅ Terminal-based interaction
+- ✅ Lightweight and fast
+
+## 🧪 Test Accounts
+
+| Phone | Name | Plan | Data |
+|-------|------|------|------|
+| 9876543210 | Rajesh Kumar | Jio Basic | 800 MB |
+| 9123456789 | Priya Sharma | Airtel Smart | 1.2 GB |
+| 9988776655 | Amit Singh | Vi Power | 2 GB |
+
+## 🏗️ Tech Stack
+
+- **Frontend**: Streamlit (Python web framework)
+- **Voice**: Google Speech Recognition + gTTS
+- **LLM**: Google Gemini 1.5 Flash
+- **Database**: TiDB Cloud (MySQL-compatible)
+- **Language**: Python 3.8+
+
+## 📦 Deployment Options
+
+❌ **Vercel** - Not compatible (Node.js only)
+
+✅ **Streamlit Cloud** - Free, recommended (see DEPLOYMENT.md)
+✅ **Hugging Face Spaces** - Free alternative
+✅ **Railway / Render** - Free tier available
+
+## 🚀 Future Extensions
 
 Integration with live telecom systems → Check actual balance, process recharges.
 

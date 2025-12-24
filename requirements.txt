@@ -4,3 +4,6 @@ pygame
 python-dotenv
 google-generativeai
 sqlalchemy
+pymysql
+streamlit
+pydub

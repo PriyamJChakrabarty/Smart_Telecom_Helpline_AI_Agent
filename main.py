@@ -10,6 +10,8 @@ from sqlalchemy import text
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")  # Default to 2.0-flash if not set
+
 genai.configure(api_key=GEMINI_API_KEY)
 
 try:
@@ -21,10 +23,11 @@ except ImportError:
 class TelecomAIAgent:
     def __init__(self):
         self.recognizer = sr.Recognizer()
-        self.model = genai.GenerativeModel("gemini-1.5-flash")
+        self.model = genai.GenerativeModel(GEMINI_MODEL)
         pygame.mixer.init()
         self.engine = engine
-        self.current_phone = None  
+        self.current_phone = None
+        print(f"[INFO] Using Gemini model: {GEMINI_MODEL}")  
         
         self.telecom_data = {
             "recharge_plans": {
