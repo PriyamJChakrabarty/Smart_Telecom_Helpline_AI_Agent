@@ -1,0 +1,182 @@
+[
+  {
+    "question": "What is my current data balance?",
+    "answer": "Aapka current data balance {balance_mb} MB hai. Yeh aapke {plan_name} plan ka part hai.",
+    "category": "balance",
+    "variations": ["kitna data bacha hai", "data balance check karo", "remaining data", "balance kitna hai"]
+  },
+  {
+    "question": "Which plan am I currently on?",
+    "answer": "Aap abhi {plan_name} plan pe ho, jo {price} rupees ka hai aur isme {data_gb} GB data milta hai {validity_days} days ke liye.",
+    "category": "plan_info",
+    "variations": ["mera plan kya hai", "current plan batao", "konsa plan active hai", "my active plan"]
+  },
+  {
+    "question": "How do I recharge my number?",
+    "answer": "Aap apna recharge karne ke liye mobile app use kar sakte ho, ya fir nearest retailer pe ja sakte ho. Online payment options bhi available hain.",
+    "category": "recharge",
+    "variations": ["recharge kaise kare", "how to recharge", "recharge karna hai", "top up kaise ho"]
+  },
+  {
+    "question": "What are the available recharge plans?",
+    "answer": "Hamare paas multiple plans available hain: 200 rupees mein basic plan (1.5GB daily), 500 rupees mein smart plan (2GB daily), aur 1000 rupees mein premium plan (3GB daily unlimited calls ke saath).",
+    "category": "recharge",
+    "variations": ["plans kya kya hain", "recharge options", "available plans", "plan list"]
+  },
+  {
+    "question": "My internet is very slow",
+    "answer": "Network slow hone ki issue ke liye, pehle apna device restart karein. Agar problem continue ho toh airplane mode on/off karein. Phir bhi issue rahe toh hamare customer care ko call karein.",
+    "category": "network",
+    "variations": ["internet slow hai", "network problem", "speed kam hai", "data slow chal raha"]
+  },
+  {
+    "question": "What is the customer care number?",
+    "answer": "Customer care number hai 1800-XXX-XXXX (toll-free). Aap unhe 24x7 call kar sakte hain for any assistance.",
+    "category": "support",
+    "variations": ["customer care ka number", "helpline number", "support contact", "complaint kaha kare"]
+  },
+  {
+    "question": "Are there any current offers?",
+    "answer": "Haan ji, abhi 20% cashback offer chal raha hai 500+ recharge pe. Aur new users ke liye welcome bonus bhi hai.",
+    "category": "offers",
+    "variations": ["koi offer hai kya", "discount milega", "cashback available", "promotional deals"]
+  },
+  {
+    "question": "When does my plan expire?",
+    "answer": "Aapka plan validity {validity_days} days ki hai. Expiry date exact jaanne ke liye apne last recharge date se count karein.",
+    "category": "plan_info",
+    "variations": ["validity kitni hai", "plan kab expire hoga", "expiry date", "plan kab khatam"]
+  },
+  {
+    "question": "Can I change my plan mid-cycle?",
+    "answer": "Haan ji, aap apna plan change kar sakte ho mid-cycle mein. Naya plan activate hone ke baad purana plan replace ho jayega.",
+    "category": "plan_info",
+    "variations": ["plan change kar sakte", "switch plan", "plan badalna hai", "upgrade downgrade"]
+  },
+  {
+    "question": "Why am I getting charged extra?",
+    "answer": "Extra charges usually tab aate hain jab aap data limit exceed kar dete ho ya out-of-pack services use karte ho. Detailed bill check karne ke liye app mein dekho.",
+    "category": "billing",
+    "variations": ["extra charge kyu", "billing issue", "paisa kat gaya", "unexpected charges"]
+  },
+  {
+    "question": "How to activate international roaming?",
+    "answer": "International roaming activate karne ke liye customer care ko call karein ya app se activate kar sakte ho. Special roaming packs bhi available hain.",
+    "category": "support",
+    "variations": ["roaming kaise activate", "international roaming", "abroad use karna", "foreign travel"]
+  },
+  {
+    "question": "What happens when data finishes?",
+    "answer": "Jab data khatam ho jata hai, toh internet speed slow ho jati hai ya service stop ho jati hai plan ke type pe depend karta hai. Aapko top-up pack lena padega.",
+    "category": "balance",
+    "variations": ["data finish hone pe", "zero balance", "data khatam", "out of data"]
+  },
+  {
+    "question": "Do you have unlimited calling plans?",
+    "answer": "Haan ji, hamare premium plans mein unlimited calling milti hai sabhi networks pe. 500 rupees aur uske upar ke plans mein yeh included hai.",
+    "category": "recharge",
+    "variations": ["unlimited call", "free calling", "calling plan", "voice unlimited"]
+  },
+  {
+    "question": "How to check my transaction history?",
+    "answer": "Transaction history dekhne ke liye mobile app mein 'My Account' section mein jao. Wahan aapko saare recent recharges aur transactions dikhenge.",
+    "category": "billing",
+    "variations": ["transactions dekhna", "recharge history", "payment history", "past payments"]
+  },
+  {
+    "question": "Is there a family plan available?",
+    "answer": "Currently family plan directly available nahi hai, lekin multiple connections pe discount mil sakta hai. Customer care se contact karein for details.",
+    "category": "plan_info",
+    "variations": ["family pack", "multiple sims", "group plan", "dual sim plan"]
+  },
+  {
+    "question": "How to port my number to another operator?",
+    "answer": "Number porting ke liye SMS bhejo 'PORT <10-digit mobile number>' ko 1900 pe. UPC code milega jo new operator ko dena hoga.",
+    "category": "support",
+    "variations": ["porting kaise kare", "network change", "operator badalna", "mnp process"]
+  },
+  {
+    "question": "What is validity of my current balance?",
+    "answer": "Balance validity aapke plan ke saath linked hai. Jab tak plan active hai tab tak balance use kar sakte ho.",
+    "category": "balance",
+    "variations": ["balance validity", "balance expire", "data validity", "kitne din chalega"]
+  },
+  {
+    "question": "Can I get a refund for unused data?",
+    "answer": "Unused data ka refund generally nahi milta hai. Lekin plan ke saath agar rollover feature ho toh next cycle mein carry forward ho sakta hai.",
+    "category": "billing",
+    "variations": ["refund milega", "unused data", "money back", "paisa wapas"]
+  },
+  {
+    "question": "Why is call quality poor?",
+    "answer": "Call quality poor hone ki wajah network coverage ho sakti hai. Apne area mein signal strength check karein. Agar consistent problem hai toh customer care ko inform karein.",
+    "category": "network",
+    "variations": ["call drop", "voice quality bad", "call nahi lag rahi", "network weak"]
+  },
+  {
+    "question": "How to activate missed call alert?",
+    "answer": "Missed call alert usually by default active hota hai. Agar nahi hai toh customer care ko call karke activate karwa sakte ho. SMS alerts bhi available hain.",
+    "category": "support",
+    "variations": ["missed call service", "call alert", "notification nahi aa rahi", "alert activate"]
+  },
+  {
+    "question": "What is the cheapest plan available?",
+    "answer": "Sabse sasta plan 200 rupees ka hai jisme 1.5GB daily data milta hai 28 days ke liye. Yeh basic calling ke saath aata hai.",
+    "category": "recharge",
+    "variations": ["cheap plan", "budget plan", "lowest price", "sasta plan"]
+  },
+  {
+    "question": "How much data do I have left?",
+    "answer": "Aapka current data balance {balance_mb} MB remaining hai. Yeh {plan_name} plan ke under hai.",
+    "category": "balance",
+    "variations": ["kitna data remaining", "balance check", "data left", "bacha hua data"]
+  },
+  {
+    "question": "Can I transfer balance to another number?",
+    "answer": "Balance transfer facility available hai selected plans mein. Dial *141# for balance transfer options and follow instructions.",
+    "category": "support",
+    "variations": ["balance transfer", "share balance", "balance dusre number pe", "transfer money"]
+  },
+  {
+    "question": "Why is my SIM not working?",
+    "answer": "SIM not working ke multiple reasons ho sakte hain: expired plan, damaged SIM, network issue. Pehle restart karein, fir customer care se contact karein.",
+    "category": "network",
+    "variations": ["sim blocked", "no service", "sim nahi chal raha", "network nahi aa raha"]
+  },
+  {
+    "question": "How to block spam calls?",
+    "answer": "Spam calls block karne ke liye DND (Do Not Disturb) service activate karein. SMS bhejo START DND to 1909. 7 days mein activate ho jayega.",
+    "category": "support",
+    "variations": ["spam block", "promotional calls band", "dnd activate", "unwanted calls"]
+  },
+  {
+    "question": "What is the process for new SIM?",
+    "answer": "Naya SIM lene ke liye nearest store pe jao with original ID proof aur address proof. Verification ke baad same day activation ho jata hai.",
+    "category": "support",
+    "variations": ["new connection", "sim kaise le", "new number", "fresh sim"]
+  },
+  {
+    "question": "Are there any student discounts?",
+    "answer": "Student discounts seasonal offers ke time available hote hain. Current offers check karne ke liye app dekho ya customer care se puchho.",
+    "category": "offers",
+    "variations": ["student offer", "education discount", "college student plan", "special discount"]
+  },
+  {
+    "question": "How to deactivate my number permanently?",
+    "answer": "Number permanently deactivate karne ke liye written request deni hogi customer care office mein. ID proof ke saath application submit karein.",
+    "category": "support",
+    "variations": ["number band karna", "disconnect", "close number", "deactivation process"]
+  },
+  {
+    "question": "Can I use data during night hours only?",
+    "answer": "Kuch special packs hain jo night hours (12 AM - 6 AM) mein extra data dete hain. Yeh add-on packs hain jo main plan ke saath le sakte ho.",
+    "category": "plan_info",
+    "variations": ["night data", "late night internet", "midnight data pack", "off-peak data"]
+  },
+  {
+    "question": "What is 4G coverage in my area?",
+    "answer": "4G coverage check karne ke liye website pe coverage map dekho ya customer care se apne pin code ke liye enquire karein. Most urban areas mein coverage hai.",
+    "category": "network",
+    "variations": ["4g available hai kya", "network coverage", "speed kya milega", "lte available"]
+  }
+]

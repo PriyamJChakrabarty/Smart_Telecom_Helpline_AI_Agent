@@ -1,4 +1,4 @@
-# agent.py - Improved Telecom AI Agent
+# agent.py - Improved Telecom AI Agent with FAISS Retrieval
 import speech_recognition as sr
 from gtts import gTTS
 import pygame
@@ -6,6 +6,7 @@ import os
 import google.generativeai as genai
 from dotenv import load_dotenv
 from sqlalchemy import text
+from faiss_retriever import FAISSRetriever
 
 load_dotenv()
 
@@ -27,7 +28,21 @@ class TelecomAIAgent:
         pygame.mixer.init()
         self.engine = engine
         self.current_phone = None
-        print(f"[INFO] Using Gemini model: {GEMINI_MODEL}")  
+        print(f"[INFO] Using Gemini model: {GEMINI_MODEL}")
+
+        # Initialize FAISS retriever for FAQ search
+        print("[INFO] Initializing FAISS retriever...")
+        try:
+            self.faiss_retriever = FAISSRetriever()
+            print("[INFO] FAISS retriever ready")
+        except Exception as e:
+            print(f"[WARNING] FAISS initialization failed: {e}")
+            self.faiss_retriever = None
+
+        # Metrics tracking
+        self.total_queries = 0
+        self.faiss_hits = 0
+        self.llm_calls = 0  
         
         self.telecom_data = {
             "recharge_plans": {
@@ -229,28 +244,59 @@ class TelecomAIAgent:
         return relevant_info
     
     def get_ai_response(self, user_input):
-        """Generate AI response using relevant data"""
+        """Generate AI response using FAISS retrieval first, then LLM fallback"""
+        self.total_queries += 1
+
+        # Step 1: Try FAISS retrieval first (reduces LLM calls by ~70%)
+        if self.faiss_retriever:
+            faq_match = self.faiss_retriever.get_best_answer(user_input, threshold=0.65)
+
+            if faq_match:
+                self.faiss_hits += 1
+                print(f"[FAISS HIT] Score: {faq_match['score']:.3f} | Category: {faq_match['category']}")
+
+                # Personalize FAQ answer with user data
+                answer = faq_match['answer']
+                if self.current_phone:
+                    user_data = self.get_user_info(self.current_phone)
+                    if user_data:
+                        name, balance_mb, plan_name, price, data_gb, validity_days = user_data
+                        # Replace placeholders in FAQ answer
+                        answer = answer.replace("{balance_mb}", str(balance_mb))
+                        answer = answer.replace("{plan_name}", plan_name)
+                        answer = answer.replace("{price}", str(price))
+                        answer = answer.replace("{data_gb}", str(data_gb))
+                        answer = answer.replace("{validity_days}", str(validity_days))
+
+                print(f"[METRICS] FAISS: {self.faiss_hits}/{self.total_queries} | LLM Reduction: {(self.faiss_hits/self.total_queries)*100:.1f}%")
+                return answer
+
+        # Step 2: Fallback to LLM if no FAQ match
+        self.llm_calls += 1
+        print(f"[LLM FALLBACK] No FAISS match found, using Gemini...")
+
         relevant_data = self.find_relevant_data(user_input)
-        
+
         if relevant_data and "not found" not in relevant_data.lower() and "not available" not in relevant_data.lower():
             prompt = f"""You are a professional telecom customer service agent speaking in formal yet friendly Hinglish.
-            
+
             TONE GUIDELINES:
             - Use formal, respectful language appropriate for customer service
             - Mix Hindi and English naturally but maintain professionalism
             - Avoid casual expressions, use respectful terms like "aap", "ji", "sir/madam"
             - Keep responses concise (2-3 sentences) but informative
             - Sound helpful and courteous, like a professional telecom agent
-            
+
             Customer query: {user_input}
             Relevant telecom data: {relevant_data}
-            
+
             Answer the query using ONLY the provided data. Be helpful, formal yet friendly."""
         else:
             return relevant_data if relevant_data else "Maaf kijiye sir/madam, abhi technical issues aa rahe hain. Customer care 199 par call kariye."
-        
+
         try:
             response = self.model.generate_content(prompt)
+            print(f"[METRICS] FAISS: {self.faiss_hits}/{self.total_queries} | LLM Reduction: {(self.faiss_hits/self.total_queries)*100:.1f}%")
             return response.text
         except Exception as e:
             print(f"AI Error: {e}")

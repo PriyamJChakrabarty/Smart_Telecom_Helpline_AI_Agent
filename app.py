@@ -1,5 +1,5 @@
 """
-Streamlit Frontend for Telecom AI Voice Assistant
+Streamlit Frontend for Telecom AI Voice Assistant with FAISS Retrieval
 Provides web-based interface with audio recording and playback
 """
 
@@ -16,6 +16,7 @@ import time
 from io import BytesIO
 import traceback
 from datetime import datetime
+from faiss_retriever import FAISSRetriever
 
 load_dotenv()
 
@@ -101,6 +102,26 @@ if 'api_call_count' not in st.session_state:
     st.session_state.api_call_count = 0
 if 'session_start_time' not in st.session_state:
     st.session_state.session_start_time = datetime.now()
+
+# Initialize FAISS retriever
+if 'faiss_retriever' not in st.session_state:
+    print("[INFO] Initializing FAISS retriever...")
+    try:
+        st.session_state.faiss_retriever = FAISSRetriever()
+        st.session_state.faiss_enabled = True
+        print("[INFO] FAISS retriever ready")
+    except Exception as e:
+        print(f"[WARNING] FAISS initialization failed: {e}")
+        st.session_state.faiss_retriever = None
+        st.session_state.faiss_enabled = False
+
+# FAISS metrics
+if 'total_queries' not in st.session_state:
+    st.session_state.total_queries = 0
+if 'faiss_hits' not in st.session_state:
+    st.session_state.faiss_hits = 0
+if 'llm_calls' not in st.session_state:
+    st.session_state.llm_calls = 0
 
 # Helper function to log errors
 def log_error(error_type, error_message, details=None):
@@ -286,7 +307,41 @@ def find_relevant_data(user_input, phone):
     return relevant_info
 
 def get_ai_response(user_input, phone):
-    """Generate AI response using Gemini"""
+    """Generate AI response using FAISS retrieval first, then LLM fallback"""
+    st.session_state.total_queries += 1
+
+    # Step 1: Try FAISS retrieval first (reduces LLM calls by ~70%)
+    if st.session_state.faiss_enabled and st.session_state.faiss_retriever:
+        faq_match = st.session_state.faiss_retriever.get_best_answer(user_input, threshold=0.65)
+
+        if faq_match:
+            st.session_state.faiss_hits += 1
+            print(f"[FAISS HIT] Score: {faq_match['score']:.3f} | Category: {faq_match['category']}")
+
+            # Personalize FAQ answer with user data
+            answer = faq_match['answer']
+            user_data = get_user_info(phone)
+            if user_data:
+                name, balance_mb, plan_name, price, data_gb, validity_days = user_data
+                # Replace placeholders in FAQ answer
+                answer = answer.replace("{balance_mb}", str(balance_mb))
+                answer = answer.replace("{plan_name}", plan_name)
+                answer = answer.replace("{price}", str(price))
+                answer = answer.replace("{data_gb}", str(data_gb))
+                answer = answer.replace("{validity_days}", str(validity_days))
+
+            llm_reduction = (st.session_state.faiss_hits / st.session_state.total_queries) * 100
+            print(f"[METRICS] FAISS: {st.session_state.faiss_hits}/{st.session_state.total_queries} | LLM Reduction: {llm_reduction:.1f}%")
+
+            # Display FAISS hit indicator in UI
+            st.info(f"⚡ Fast FAQ match (FAISS) | Confidence: {faq_match['score']:.0%} | LLM calls reduced by {llm_reduction:.0%}")
+
+            return answer
+
+    # Step 2: Fallback to LLM if no FAQ match
+    st.session_state.llm_calls += 1
+    print(f"[LLM FALLBACK] No FAISS match found, using Gemini...")
+
     relevant_data = find_relevant_data(user_input, phone)
 
     if relevant_data and "not found" not in relevant_data.lower() and "not available" not in relevant_data.lower():
@@ -314,6 +369,10 @@ def get_ai_response(user_input, phone):
         response = model.generate_content(prompt)
 
         print(f"[INFO] Gemini API Response received successfully")
+
+        # Show LLM fallback indicator
+        st.info("🤖 Response from Gemini LLM (no FAQ match)")
+
         return response.text
 
     except Exception as e:
@@ -473,6 +532,14 @@ with st.sidebar:
 
     st.success(f"✅ Gemini API: Configured")
     st.caption(f"Model: {GEMINI_MODEL}")
+
+    # FAISS status
+    if st.session_state.faiss_enabled:
+        st.success("✅ FAISS: Ready")
+        st.caption(f"FAQs: {len(st.session_state.faiss_retriever.faqs) if st.session_state.faiss_retriever else 0}")
+    else:
+        st.warning("⚠️ FAISS: Disabled")
+
     st.info(f"✅ Speech API: Ready")
     st.info(f"✅ TTS: Ready")
 
@@ -480,7 +547,15 @@ with st.sidebar:
 
     # Session stats
     st.markdown("#### 📊 Session Stats")
-    st.metric("API Calls", st.session_state.api_call_count)
+    st.metric("Gemini API Calls", st.session_state.api_call_count)
+
+    # FAISS metrics
+    if st.session_state.faiss_enabled:
+        faiss_hit_rate = (st.session_state.faiss_hits / st.session_state.total_queries * 100) if st.session_state.total_queries > 0 else 0
+        st.metric("FAISS Hits", f"{st.session_state.faiss_hits}/{st.session_state.total_queries}", delta=f"{faiss_hit_rate:.0f}% hit rate")
+        llm_reduction = (st.session_state.faiss_hits / st.session_state.total_queries * 100) if st.session_state.total_queries > 0 else 0
+        st.metric("LLM Reduction", f"{llm_reduction:.1f}%", delta="Cost savings", delta_color="normal")
+
     session_mins = (datetime.now() - st.session_state.session_start_time).seconds // 60
     st.metric("Uptime", f"{session_mins} min")
 

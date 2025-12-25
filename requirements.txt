@@ -7,3 +7,6 @@ sqlalchemy
 pymysql
 streamlit
 pydub
+sentence-transformers
+faiss-cpu
+numpy
